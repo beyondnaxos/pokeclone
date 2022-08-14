@@ -1,0 +1,20 @@
+{
+  "type":"module",
+  "name": "pokeclone",
+  "version": "1.0.0",
+  "description": "Keycodes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beyondnaxos/pokeclone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/beyondnaxos/pokeclone/issues"
+  },
+  "homepage": "https://github.com/beyondnaxos/pokeclone#readme"
+}
