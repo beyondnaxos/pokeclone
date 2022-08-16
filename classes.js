@@ -1,4 +1,4 @@
-class Sprite {
+export class Sprite {
   constructor({ position, velocity, image, frames = { max: 1 }, sprites }) {
     this.position = position
     this.image = image
@@ -12,9 +12,8 @@ class Sprite {
     this.sprites = sprites
   }
 
-  draw() {
-    const canvas = document.querySelector('canvas')
-    const c = canvas.getContext('2d')
+  draw(c) {
+
     c.drawImage(
       this.image,
       this.frames.val * this.width,
@@ -39,7 +38,7 @@ class Sprite {
   }
 }
 
-class Boundary {
+export class Boundary {
   static width = 48
   static height = 48
   constructor({ position }) {
@@ -48,9 +47,8 @@ class Boundary {
     this.height = 48
   }
 
-  draw() {
-    const canvas = document.querySelector('canvas')
-    const c = canvas.getContext('2d')
+  draw(c) {
+
     c.fillStyle = 'rgba(255, 0, 0, 0.2)'
     c.fillRect(this.position.x, this.position.y, this.width, this.height)
   }
