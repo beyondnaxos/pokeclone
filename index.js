@@ -1,5 +1,4 @@
 import { collisions } from './data/collisions.js'
-import { Sprite, Boundary} from '/classes.js'
 
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
@@ -115,12 +114,12 @@ function rectangularCollision({ rectangle1, rectangle2 }) {
 
 function animate() {
   window.requestAnimationFrame(animate)
-  background.draw(c)
+  background.draw()
   boundaries.forEach((boundary) => {
-    boundary.draw(c)
+    boundary.draw()
   })
-  player.draw(c)
-  foreground.draw(c)
+  player.draw()
+  foreground.draw()
   let moving = true
   player.moving = false
   if (keys.z.pressed && lastKey === 'z') {
