@@ -6,7 +6,8 @@ import { config } from './data/config.js'
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
-console.log(collisions)
+console.log(gsap)
+
 
 canvas.width = config.viewWith
 // canvas.height = 576
@@ -154,7 +155,7 @@ function animate() {
 
   let moving = true
   player.moving = false
-  
+
   if (battle.initiated) return
 
   if (keys.z.pressed || keys.q.pressed || keys.s.pressed || keys.d.pressed) {
@@ -182,6 +183,22 @@ function animate() {
       ) {
         console.log('activate battle')
         battle.initiated = true
+        gsap.to('#overlappingDiv', {
+          opacity : 1,
+          repeat: 3,
+          yoyo: true,
+          duration: 0.4,
+          onComplete() {
+            gsap.to('#overlappingDiv', {
+              opacity : 1,
+              duration: 0.4,
+            })
+
+            // activate new animation loop 
+
+            // deactivate current animation loop
+          }
+        })
         break
       }
     }
