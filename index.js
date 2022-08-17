@@ -25,8 +25,8 @@ for (let i = 0; i < battleZonesData.length; i += config.mapWidth) {
 const boundaries = []
 
 const offset = {
-  x: -1400,
-  y: -150,
+  x: config.playerOffset.x,
+  y: config.playerOffset.y,
 }
 
 collisionsMap.forEach((row, i) => {
@@ -182,7 +182,6 @@ function animate() {
         // battle activation rate
         Math.random() < config.activationBattleRate
       ) {
-
         console.log('activate battle')
 
         // deactivate current animation loop
@@ -199,10 +198,16 @@ function animate() {
             gsap.to('#overlappingDiv', {
               opacity: 1,
               duration: 0.4,
+              onComplete() {
+                animateBattle()
+                gsap.to('#overlappingDiv', {
+                  opacity: 0,
+                  duration: 0.4,
+                })
+              },
             })
 
             // activate new animation loop
-            animateBattle()
           },
         })
         break
@@ -445,12 +450,27 @@ function animate() {
   }
   /******************************************************************************************* */
 }
+// disabled for dev battle 
+// animate()
 
-animate()
-function animateBattle () {
+const battleBackgroundImage = new Image()
+battleBackgroundImage.src = './img/battleBackground.png'
+const battleBackground = new Sprite({
+  position: {
+    x: 0,
+    y: 0,
+  },
+  image: battleBackgroundImage,
+})
+
+function animateBattle() {
   window.requestAnimationFrame(animateBattle)
-  console.log("animating battle")
+  battleBackground.draw(c)
 }
+
+
+animateBattle()
+
 
 let lastKey = ''
 
