@@ -8,7 +8,6 @@ const c = canvas.getContext('2d')
 
 console.log(gsap)
 
-
 canvas.width = config.viewWith
 // canvas.height = 576
 canvas.height = config.viewHeight
@@ -142,7 +141,8 @@ const battle = {
 }
 
 function animate() {
-  window.requestAnimationFrame(animate)
+  const animationId = window.requestAnimationFrame(animate)
+  // console.log('animationId', animationId)
   background.draw(c)
   boundaries.forEach((boundary) => {
     boundary.draw(c)
@@ -156,6 +156,7 @@ function animate() {
   let moving = true
   player.moving = false
 
+  console.log(animationId)
   if (battle.initiated) return
 
   if (keys.z.pressed || keys.q.pressed || keys.s.pressed || keys.d.pressed) {
@@ -181,29 +182,33 @@ function animate() {
         // battle activation rate
         Math.random() < config.activationBattleRate
       ) {
+
         console.log('activate battle')
+
+        // deactivate current animation loop
+        window.cancelAnimationFrame(animationId)
+
         battle.initiated = true
+
         gsap.to('#overlappingDiv', {
-          opacity : 1,
+          opacity: 1,
           repeat: 3,
           yoyo: true,
           duration: 0.4,
           onComplete() {
             gsap.to('#overlappingDiv', {
-              opacity : 1,
+              opacity: 1,
               duration: 0.4,
             })
 
-            // activate new animation loop 
-
-            // deactivate current animation loop
-          }
+            // activate new animation loop
+            animateBattle()
+          },
         })
         break
       }
     }
   }
-
 
   if (keys.z.pressed && lastKey === 'z') {
     player.moving = true
@@ -442,6 +447,10 @@ function animate() {
 }
 
 animate()
+function animateBattle () {
+  window.requestAnimationFrame(animateBattle)
+  console.log("animating battle")
+}
 
 let lastKey = ''
 
