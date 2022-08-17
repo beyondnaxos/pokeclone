@@ -1,24 +1,25 @@
 import { collisions } from './data/collisions.js'
 import { battleZonesData } from './data/battleZones.js'
 import { Sprite, Boundary } from '/classes.js'
+import {config} from './data/config.js'
 
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
 console.log(collisions)
 
-canvas.width = 1024
+canvas.width = config.viewWith
 // canvas.height = 576
-canvas.height = 800
+canvas.height = config.viewHeight
 
 const collisionsMap = []
-for (let i = 0; i < collisions.length; i += 70) {
-  collisionsMap.push(collisions.slice(i, 70 + i))
+for (let i = 0; i < collisions.length; i += config.mapWidth) {
+  collisionsMap.push(collisions.slice(i, config.mapWidth + i))
 }
 
 const battleZonesMap = []
-for (let i = 0; i < battleZonesData.length; i += 70) {
-  battleZonesMap.push(battleZonesData.slice(i, 70 + i))
+for (let i = 0; i < battleZonesData.length; i += config.mapWidth) {
+  battleZonesMap.push(battleZonesData.slice(i, config.mapWidth + i))
 }
 
 const boundaries = []
@@ -128,10 +129,10 @@ const keys = {
 const movables = [background, ...boundaries, foreground, ...battleZones]
 function rectangularCollision({ rectangle1, rectangle2 }) {
   return (
-    rectangle1.position.x  + rectangle1.width -15 >= rectangle2.position.x && // right
-    rectangle1.position.x  <= rectangle2.position.x -15 + rectangle2.width && // left
-    rectangle1.position.y  <= rectangle2.position.y -25 + rectangle2.height && // up
-    rectangle1.position.y  + rectangle1.height  >= rectangle2.position.y // down
+    rectangle1.position.x + rectangle1.width - 15 >= rectangle2.position.x && // right
+    rectangle1.position.x <= rectangle2.position.x - 15 + rectangle2.width && // left
+    rectangle1.position.y <= rectangle2.position.y - 25 + rectangle2.height && // up
+    rectangle1.position.y + rectangle1.height >= rectangle2.position.y // down
   )
 }
 
@@ -151,20 +152,34 @@ function animate() {
   if (keys.z.pressed || keys.q.pressed || keys.s.pressed || keys.d.pressed) {
     for (let i = 0; i < battleZones.length; i++) {
       const battleZone = battleZones[i]
+      const overlappingArea =
+        (Math.min(
+          player.position.x + player.width,
+          battleZone.position.x + battleZone.width
+        ) -
+          Math.max(player.position.x, battleZone.position.x)) *
+        (Math.min(
+          player.position.y + player.height,
+          battleZone.position.y + battleZone.height
+        ) -
+          Math.max(player.position.y, battleZone.position.y))
       if (
         rectangularCollision({
           rectangle1: player,
-          rectangle2: battleZone,
-        })
+          rectangle2: battleZone
+        }) &&
+        overlappingArea > (player.width * player.height) / 2 && 
+        // battle activation rate 
+        Math.random() < config.activationBattleRate
       ) {
-        console.log('battle collision')
+        console.log('activate battle')
         break
       }
     }
   }
 
   player.moving = false
-  if (keys.z.pressed && lastKey === 'z') {
+  if (keys.z.pressed && lastKey === 'z'  ) {
     player.moving = true
     player.image = player.sprites.up
     for (let i = 0; i < boundaries.length; i++) {
@@ -270,7 +285,125 @@ function animate() {
       movables.forEach((movable) => {
         movable.position.x -= 3
       })
+      
+  } 
+
+  /******************************************************************************************** */
+  //  allow free move 
+   else if (keys.z.pressed && lastKey === 'q' || keys.z.pressed && lastKey === 'd' || keys.z.pressed && lastKey === 's') {
+    player.moving = true
+    player.image = player.sprites.up
+    for (let i = 0; i < boundaries.length; i++) {
+      const boundary = boundaries[i]
+      if (
+        rectangularCollision({
+          rectangle1: player,
+          rectangle2: {
+            ...boundary,
+            position: {
+              x: boundary.position.x,
+              y: boundary.position.y + 3,
+            },
+          },
+        })
+      ) {
+        console.log('collision')
+        moving = false
+        break
+      }
+    }
+
+     if (moving)
+      movables.forEach((movable) => {
+        movable.position.y += 3
+      })
   }
+  else if (keys.q.pressed && lastKey === 'z' || keys.q.pressed && lastKey === 's' || keys.q.pressed && lastKey === 'd') {
+    player.moving = true
+    player.image = player.sprites.left
+    for (let i = 0; i < boundaries.length; i++) {
+      const boundary = boundaries[i]
+      if (
+        rectangularCollision({
+          rectangle1: player,
+          rectangle2: {
+            ...boundary,
+            position: {
+              x: boundary.position.x + 3,
+              y: boundary.position.y,
+            },
+          },
+        })
+      ) {
+        console.log('collision')
+        moving = false
+        break
+      }
+    }
+
+    if (moving)
+      movables.forEach((movable) => {
+        movable.position.x += 3
+      })
+  }
+  else if (keys.s.pressed && lastKey === 'z' || keys.s.pressed && lastKey === 'q' || keys.s.pressed && lastKey === 'd') {
+    player.moving = true
+    player.image = player.sprites.down
+    for (let i = 0; i < boundaries.length; i++) {
+      const boundary = boundaries[i]
+      if (
+        rectangularCollision({
+          rectangle1: player,
+          rectangle2: {
+            ...boundary,
+            position: {
+              x: boundary.position.x,
+              y: boundary.position.y - 3,
+            },
+          },
+        })
+      ) {
+        console.log('collision')
+        moving = false
+        break
+      }
+    }
+    if (moving)
+      movables.forEach((movable) => {
+        movable.position.y -= 3
+      })
+  }
+   else if (keys.d.pressed && lastKey === 'z' || keys.d.pressed && lastKey === 'q' || keys.d.pressed && lastKey === 's') {
+    player.moving = true
+    player.image = player.sprites.right
+    for (let i = 0; i < boundaries.length; i++) {
+      const boundary = boundaries[i]
+      if (
+        rectangularCollision({
+          rectangle1: player,
+          rectangle2: {
+            ...boundary,
+            position: {
+              x: boundary.position.x - 3,
+              y: boundary.position.y,
+            },
+          },
+        })
+      ) {
+        console.log('collision')
+        moving = false
+        break
+      }
+    }
+    if (moving)
+      movables.forEach((movable) => {
+        movable.position.x -= 3
+      })
+  }
+  /******************************************************************************************* */
+
+
+  
 }
 
 animate()
