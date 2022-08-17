@@ -1,7 +1,7 @@
 import { collisions } from './data/collisions.js'
 import { battleZonesData } from './data/battleZones.js'
 import { Sprite, Boundary } from '/classes.js'
-import {config} from './data/config.js'
+import { config } from './data/config.js'
 
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
@@ -136,6 +136,10 @@ function rectangularCollision({ rectangle1, rectangle2 }) {
   )
 }
 
+const battle = {
+  initiated: false,
+}
+
 function animate() {
   window.requestAnimationFrame(animate)
   background.draw(c)
@@ -147,7 +151,11 @@ function animate() {
   })
   player.draw(c)
   foreground.draw(c)
+
   let moving = true
+  player.moving = false
+  
+  if (battle.initiated) return
 
   if (keys.z.pressed || keys.q.pressed || keys.s.pressed || keys.d.pressed) {
     for (let i = 0; i < battleZones.length; i++) {
@@ -166,20 +174,21 @@ function animate() {
       if (
         rectangularCollision({
           rectangle1: player,
-          rectangle2: battleZone
+          rectangle2: battleZone,
         }) &&
-        overlappingArea > (player.width * player.height) / 2 && 
-        // battle activation rate 
+        overlappingArea > (player.width * player.height) / 2 &&
+        // battle activation rate
         Math.random() < config.activationBattleRate
       ) {
         console.log('activate battle')
+        battle.initiated = true
         break
       }
     }
   }
 
-  player.moving = false
-  if (keys.z.pressed && lastKey === 'z'  ) {
+
+  if (keys.z.pressed && lastKey === 'z') {
     player.moving = true
     player.image = player.sprites.up
     for (let i = 0; i < boundaries.length; i++) {
@@ -285,12 +294,15 @@ function animate() {
       movables.forEach((movable) => {
         movable.position.x -= 3
       })
-      
-  } 
+  }
 
   /******************************************************************************************** */
-  //  allow free move 
-   else if (keys.z.pressed && lastKey === 'q' || keys.z.pressed && lastKey === 'd' || keys.z.pressed && lastKey === 's') {
+  //  allow free move
+  else if (
+    (keys.z.pressed && lastKey === 'q') ||
+    (keys.z.pressed && lastKey === 'd') ||
+    (keys.z.pressed && lastKey === 's')
+  ) {
     player.moving = true
     player.image = player.sprites.up
     for (let i = 0; i < boundaries.length; i++) {
@@ -313,12 +325,15 @@ function animate() {
       }
     }
 
-     if (moving)
+    if (moving)
       movables.forEach((movable) => {
         movable.position.y += 3
       })
-  }
-  else if (keys.q.pressed && lastKey === 'z' || keys.q.pressed && lastKey === 's' || keys.q.pressed && lastKey === 'd') {
+  } else if (
+    (keys.q.pressed && lastKey === 'z') ||
+    (keys.q.pressed && lastKey === 's') ||
+    (keys.q.pressed && lastKey === 'd')
+  ) {
     player.moving = true
     player.image = player.sprites.left
     for (let i = 0; i < boundaries.length; i++) {
@@ -345,8 +360,11 @@ function animate() {
       movables.forEach((movable) => {
         movable.position.x += 3
       })
-  }
-  else if (keys.s.pressed && lastKey === 'z' || keys.s.pressed && lastKey === 'q' || keys.s.pressed && lastKey === 'd') {
+  } else if (
+    (keys.s.pressed && lastKey === 'z') ||
+    (keys.s.pressed && lastKey === 'q') ||
+    (keys.s.pressed && lastKey === 'd')
+  ) {
     player.moving = true
     player.image = player.sprites.down
     for (let i = 0; i < boundaries.length; i++) {
@@ -372,8 +390,11 @@ function animate() {
       movables.forEach((movable) => {
         movable.position.y -= 3
       })
-  }
-   else if (keys.d.pressed && lastKey === 'z' || keys.d.pressed && lastKey === 'q' || keys.d.pressed && lastKey === 's') {
+  } else if (
+    (keys.d.pressed && lastKey === 'z') ||
+    (keys.d.pressed && lastKey === 'q') ||
+    (keys.d.pressed && lastKey === 's')
+  ) {
     player.moving = true
     player.image = player.sprites.right
     for (let i = 0; i < boundaries.length; i++) {
@@ -401,9 +422,6 @@ function animate() {
       })
   }
   /******************************************************************************************* */
-
-
-  
 }
 
 animate()
