@@ -86,6 +86,7 @@ const player = new Sprite({
   image: playerDownImage,
   frames: {
     max: 4,
+    hold: config.playerAnimationSpeed,
   },
   sprites: {
     up: playerUpImage,
@@ -154,7 +155,7 @@ function animate() {
   foreground.draw(c)
 
   let moving = true
-  player.moving = false
+  player.animate = false
 
   console.log(animationId)
   if (battle.initiated) return
@@ -216,7 +217,7 @@ function animate() {
   }
 
   if (keys.z.pressed && lastKey === 'z') {
-    player.moving = true
+    player.animate = true
     player.image = player.sprites.up
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i]
@@ -243,7 +244,7 @@ function animate() {
         movable.position.y += 3
       })
   } else if (keys.q.pressed && lastKey === 'q') {
-    player.moving = true
+    player.animate = true
     player.image = player.sprites.left
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i]
@@ -270,7 +271,7 @@ function animate() {
         movable.position.x += 3
       })
   } else if (keys.s.pressed && lastKey === 's') {
-    player.moving = true
+    player.animate = true
     player.image = player.sprites.down
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i]
@@ -296,7 +297,7 @@ function animate() {
         movable.position.y -= 3
       })
   } else if (keys.d.pressed && lastKey === 'd') {
-    player.moving = true
+    player.animate = true
     player.image = player.sprites.right
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i]
@@ -330,7 +331,7 @@ function animate() {
     (keys.z.pressed && lastKey === 'd') ||
     (keys.z.pressed && lastKey === 's')
   ) {
-    player.moving = true
+    player.animate = true
     player.image = player.sprites.up
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i]
@@ -361,7 +362,7 @@ function animate() {
     (keys.q.pressed && lastKey === 's') ||
     (keys.q.pressed && lastKey === 'd')
   ) {
-    player.moving = true
+    player.animate = true
     player.image = player.sprites.left
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i]
@@ -392,7 +393,7 @@ function animate() {
     (keys.s.pressed && lastKey === 'q') ||
     (keys.s.pressed && lastKey === 'd')
   ) {
-    player.moving = true
+    player.animate = true
     player.image = player.sprites.down
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i]
@@ -422,7 +423,7 @@ function animate() {
     (keys.d.pressed && lastKey === 'q') ||
     (keys.d.pressed && lastKey === 's')
   ) {
-    player.moving = true
+    player.animate = true
     player.image = player.sprites.right
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i]
@@ -463,12 +464,53 @@ const battleBackground = new Sprite({
   image: battleBackgroundImage,
 })
 
+
+const draggleImage = new Image()
+draggleImage.src = './img/draggleSprite.png'
+
+const draggle = new Sprite({
+  position: {
+    x: 800,
+    y: 100,
+  },
+  image : draggleImage,
+  frames : {
+    max: 4,
+    hold : config.adversMonsterAnimationSpeed
+  },
+  animate : true,
+
+})
+
+
+const embyImage = new Image()
+embyImage.src = './img/embySprite.png'
+
+const emby = new Sprite({
+  position: {
+    x: 280,
+    y: 325,
+  },
+  image : embyImage,
+  frames : {
+    max: 4,
+    hold : config.myMonsterAnimationSpeed
+  },
+  animate : true,
+
+})
+
+
+
 function animateBattle() {
   window.requestAnimationFrame(animateBattle)
   battleBackground.draw(c)
+  draggle.draw(c)
+  emby.draw(c)
 }
 
 
+// animate()
 animateBattle()
 
 
