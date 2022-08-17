@@ -1,5 +1,6 @@
 import { collisions } from './data/collisions.js'
-import { Sprite, Boundary} from '/classes.js'
+import { battleZonesData } from './data/battleZones.js'
+import { Sprite, Boundary } from '/classes.js'
 
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
@@ -11,9 +12,13 @@ canvas.width = 1024
 canvas.height = 800
 
 const collisionsMap = []
-
 for (let i = 0; i < collisions.length; i += 70) {
   collisionsMap.push(collisions.slice(i, 70 + i))
+}
+
+const battleZonesMap = []
+for (let i = 0; i < battleZonesData.length; i += 70) {
+  battleZonesMap.push(battleZonesData.slice(i, 70 + i))
 }
 
 const boundaries = []
@@ -36,6 +41,23 @@ collisionsMap.forEach((row, i) => {
       )
   })
 })
+
+const battleZones = []
+battleZonesMap.forEach((row, i) => {
+  row.forEach((symbol, j) => {
+    if (symbol === 1025)
+      battleZones.push(
+        new Boundary({
+          position: {
+            x: j * Boundary.width + offset.x,
+            y: i * Boundary.height + offset.y,
+          },
+        })
+      )
+  })
+})
+
+console.log('battleZones', battleZones)
 
 const image = new Image()
 image.src = './img/Naxos_town.png'
@@ -67,7 +89,7 @@ const player = new Sprite({
   sprites: {
     up: playerUpImage,
     left: playerLeftImage,
-    right : playerRightImage,
+    right: playerRightImage,
     down: playerDownImage,
   },
 })
@@ -103,13 +125,13 @@ const keys = {
   },
 }
 
-const movables = [background, ...boundaries, foreground]
+const movables = [background, ...boundaries, foreground, ...battleZones]
 function rectangularCollision({ rectangle1, rectangle2 }) {
   return (
-    rectangle1.position.x + rectangle1.width >= rectangle2.position.x &&
-    rectangle1.position.x <= rectangle2.position.x + rectangle2.width &&
-    rectangle1.position.y <= rectangle2.position.y + rectangle2.height &&
-    rectangle1.position.y + rectangle1.height >= rectangle2.position.y
+    rectangle1.position.x  + rectangle1.width -15 >= rectangle2.position.x && // right
+    rectangle1.position.x  <= rectangle2.position.x -15 + rectangle2.width && // left
+    rectangle1.position.y  <= rectangle2.position.y -25 + rectangle2.height && // up
+    rectangle1.position.y  + rectangle1.height  >= rectangle2.position.y // down
   )
 }
 
@@ -119,9 +141,28 @@ function animate() {
   boundaries.forEach((boundary) => {
     boundary.draw(c)
   })
+  battleZones.forEach((battleZone) => {
+    battleZone.draw(c)
+  })
   player.draw(c)
   foreground.draw(c)
   let moving = true
+
+  if (keys.z.pressed || keys.q.pressed || keys.s.pressed || keys.d.pressed) {
+    for (let i = 0; i < battleZones.length; i++) {
+      const battleZone = battleZones[i]
+      if (
+        rectangularCollision({
+          rectangle1: player,
+          rectangle2: battleZone,
+        })
+      ) {
+        console.log('battle collision')
+        break
+      }
+    }
+  }
+
   player.moving = false
   if (keys.z.pressed && lastKey === 'z') {
     player.moving = true
@@ -145,6 +186,7 @@ function animate() {
         break
       }
     }
+
     if (moving)
       movables.forEach((movable) => {
         movable.position.y += 3
@@ -171,6 +213,7 @@ function animate() {
         break
       }
     }
+
     if (moving)
       movables.forEach((movable) => {
         movable.position.x += 3
