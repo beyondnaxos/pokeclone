@@ -79,6 +79,7 @@ export class Sprite {
 
     switch (attack.name) {
       case 'Fireball':
+
         const fireballImage = new Image()
         fireballImage.src = './img/fireball.png'
         const fireball = new Sprite({
@@ -121,7 +122,54 @@ export class Sprite {
         })
 
         break
-      case 'Tackle':
+        
+      case 'Growl':
+
+        const growlImage = new Image()
+        growlImage.src = './img/fireball.png'
+        const growl = new Sprite({
+          position: {
+            x: this.position.x,
+            y: this.position.y,
+          },
+          image: growlImage,
+          frames: {
+            max: 4,
+            hold: 10,
+          },
+          animate: true,
+          rotation
+        })
+        renderedSprites.splice(1, 0, growl)
+
+        gsap.to(growl.position, {
+          x: recipient.position.x,
+          y: recipient.position.y,
+          onComplete: () => {
+            gsap.to(healthBar, {
+              width: this.health + '%',
+            })
+            gsap.to(recipient.position, {
+              x: recipient.position.x + 12,
+              yoyo: true,
+              repeat: 5,
+              duration: 0.08,
+            })
+
+            gsap.to(recipient, {
+              opacity: 0,
+              repeat: 5,
+              yoyo: true,
+              duration: 0.08,
+            })
+            renderedSprites.splice(1, 1)
+          },
+        })
+
+        break
+        
+      
+        case 'Tackle':
         const tl = gsap.timeline()
 
         let movementDistance = 20

@@ -34,8 +34,8 @@ export const attacks = {
         damage: 25,
         type: 'fighting',
     },
-    Grow : {
-        name: 'Grow',
+    Growl : {
+        name: 'Growl',
         damage: 2,
         type: 'normal',
     },
