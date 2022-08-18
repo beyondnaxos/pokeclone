@@ -1,12 +1,6 @@
 import { attacks } from "./attacks.js"
 import { config } from "./config.js"
 
-const embyImage = new Image()
-embyImage.src = './img/embySprite.png'
-
-
-const draggleImage = new Image()
-draggleImage.src = './img/draggleSprite.png'
 
 export const monsters = {
   Emby: {
@@ -14,7 +8,9 @@ export const monsters = {
       x: 280,
       y: 325,
     },
-    image: embyImage,
+    image: {
+      src : './img/embySprite.png',
+    },
     frames: {
       max: 4,
       hold: config.myMonsterAnimationSpeed,
@@ -29,7 +25,9 @@ export const monsters = {
         x: 800,
         y: 100,
     },
-    image: draggleImage,
+    image: {
+      src : './img/draggleSprite.png',
+    },
     frames: {
         max: 4,
         hold: config.adversMonsterAnimationSpeed,
