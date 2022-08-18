@@ -95,7 +95,13 @@ export class Monster extends Sprite {
   attack({ attack, recipient, renderedSprites }) {
 
     document.querySelector('#dialogueBox').style.display = 'flex'
-    document.querySelector('.letters').innerHTML = this.name + ' used ' + attack.name + ' ' + recipient.name  + '  lost ' + attack.damage + ' health points'
+    if(attack.damage > 25) {
+      document.querySelector('.letters').style.color = 'red'
+      document.querySelector('.letters').innerHTML = '<b class="red">Critical </b>'  + this.name + ' used ' + attack.name + ' ' + recipient.name  + '  lost ' + attack.damage + ' health points' 
+    } else {
+      document.querySelector('.letters').style.color = 'black'
+      document.querySelector('.letters').innerHTML =  this.name + ' used ' + attack.name + ' , ' + recipient.name  + '  lost ' + attack.damage + ' health points'
+    }
 
 
     let healthBar = '#enemyHealthBar'

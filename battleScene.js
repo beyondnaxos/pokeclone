@@ -103,11 +103,16 @@ document.querySelectorAll('button').forEach((button) => {
 
     queue.push(() => {
       draggle.attack({
-        attack: attacks.Tackle,
+        attack: randomAttack,
         recipient: emby,
         renderedSprites,
       })
     })
+  })
+  button.addEventListener('mouseenter', (e) => {
+    const selectedAttack = attacks[e.currentTarget.innerHTML]
+    document.querySelector('#attackType').innerHTML = selectedAttack.type + ' ' + selectedAttack.range
+    document.querySelector('#attackType').style.color = selectedAttack.color
   })
 })
 
