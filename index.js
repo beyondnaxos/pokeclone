@@ -159,7 +159,7 @@ export function animate() {
   let moving = true
   player.animate = false
 
-  console.log(animationId)
+  // console.log(animationId)
   if (battle.initiated) return
 
   if (keys.z.pressed || keys.q.pressed || keys.s.pressed || keys.d.pressed) {
