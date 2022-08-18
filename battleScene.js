@@ -183,7 +183,7 @@ export function initBattle() {
                 gsap.to('#overlappingDiv', {
                   opacity: 0,
                 })
-                battle.initated = false
+                battle.initiated = false
               },
             })
           })
