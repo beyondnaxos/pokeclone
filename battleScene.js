@@ -24,12 +24,10 @@ const emby = new Monster(monsters.Emby)
 const renderedSprites = [draggle, emby]
 
 emby.attacks.forEach((attack) => {
-    const button = document.createElement('button')
-    button.innerHTML = attack.name
-    document.querySelector('#attackBox').append(button)
+  const button = document.createElement('button')
+  button.innerHTML = attack.name
+  document.querySelector('#attackBox').append(button)
 })
-
-
 
 function animateBattle() {
   window.requestAnimationFrame(animateBattle)
@@ -99,7 +97,15 @@ document.querySelectorAll('button').forEach((button) => {
     })
 
     animeLetters()
-    const randomAttack = draggle.attacks[Math.floor(Math.random()* draggle.attacks.length)]
+
+    if (draggle.health <= 0) {
+      queue.push(() => {
+        draggle.faint()
+      })
+    }
+
+    const randomAttack =
+      draggle.attacks[Math.floor(Math.random() * draggle.attacks.length)]
 
     queue.push(() => {
       draggle.attack({
@@ -107,11 +113,17 @@ document.querySelectorAll('button').forEach((button) => {
         recipient: emby,
         renderedSprites,
       })
+      if (emby.health <= 0) {
+        queue.push(() => {
+          emby.faint()
+        })
+      }
     })
   })
   button.addEventListener('mouseenter', (e) => {
     const selectedAttack = attacks[e.currentTarget.innerHTML]
-    document.querySelector('#attackType').innerHTML = selectedAttack.type + ' ' + selectedAttack.range
+    document.querySelector('#attackType').innerHTML =
+      selectedAttack.type + ' ' + selectedAttack.range
     document.querySelector('#attackType').style.color = selectedAttack.color
   })
 })
