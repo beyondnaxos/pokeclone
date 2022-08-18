@@ -99,6 +99,7 @@ document.querySelectorAll('button').forEach((button) => {
     })
 
     animeLetters()
+    const randomAttack = draggle.attacks[Math.floor(Math.random()* draggle.attacks.length)]
 
     queue.push(() => {
       draggle.attack({

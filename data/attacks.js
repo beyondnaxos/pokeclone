@@ -1,17 +1,23 @@
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+
+
 export const attacks = {
     Tackle: {
         name: 'Tackle',
-        damage: 10,
+        damage: Math.floor(getRandomArbitrary(5, 15)),
         type: 'normal',
       },
     Fireball : {
         name: 'Fireball',
-        damage: 25,
+        damage: Math.floor(getRandomArbitrary(25, 35)),
         type: 'fire',
     },
     Waterball : {
         name: 'Waterball',
-        damage: 25,
+        damage: Math.floor(getRandomArbitrary(10, 45)),
         type: 'water',
     },
     Thunderball : {
@@ -36,7 +42,7 @@ export const attacks = {
     },
     Growl : {
         name: 'Growl',
-        damage: 2,
+        damage: Math.floor(getRandomArbitrary(5, 15)),
         type: 'normal',
     },
     Heal : {

@@ -151,6 +151,50 @@ export class Monster extends Sprite {
         })
 
         break
+      case 'Waterball':
+
+        const waterballImage = new Image()
+        waterballImage.src = './img/fireball.png'
+        const waterball = new Sprite({
+          position: {
+            x: this.position.x,
+            y: this.position.y,
+          },
+          image: waterballImage,
+          frames: {
+            max: 4,
+            hold: 10,
+          },
+          animate: true,
+          rotation
+        })
+        renderedSprites.splice(1, 0, waterball)
+
+        gsap.to(waterball.position, {
+          x: recipient.position.x,
+          y: recipient.position.y,
+          onComplete: () => {
+            gsap.to(healthBar, {
+              width: this.health + '%',
+            })
+            gsap.to(recipient.position, {
+              x: recipient.position.x + 12,
+              yoyo: true,
+              repeat: 5,
+              duration: 0.08,
+            })
+
+            gsap.to(recipient, {
+              opacity: 0,
+              repeat: 5,
+              yoyo: true,
+              duration: 0.08,
+            })
+            renderedSprites.splice(1, 1)
+          },
+        })
+
+        break
         
       case 'Growl':
 
