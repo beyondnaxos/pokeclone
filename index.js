@@ -1,6 +1,7 @@
 import { collisions } from './data/collisions.js'
 import { battleZonesData } from './data/battleZones.js'
 import { Sprite, Boundary } from '/classes.js'
+import { attacks } from './data/attacks.js'
 import { config } from './data/config.js'
 
 const canvas = document.querySelector('canvas')
@@ -454,70 +455,7 @@ function animate() {
 // disabled for dev battle
 // animate()
 
-const battleBackgroundImage = new Image()
-battleBackgroundImage.src = './img/battleBackground.png'
-const battleBackground = new Sprite({
-  position: {
-    x: 0,
-    y: 0,
-  },
-  image: battleBackgroundImage,
-})
 
-const draggleImage = new Image()
-draggleImage.src = './img/draggleSprite.png'
-
-const draggle = new Sprite({
-  position: {
-    x: 800,
-    y: 100,
-  },
-  image: draggleImage,
-  frames: {
-    max: 4,
-    hold: config.adversMonsterAnimationSpeed,
-  },
-  animate: true,
-  isEnemy : true,
-})
-
-const embyImage = new Image()
-embyImage.src = './img/embySprite.png'
-
-const emby = new Sprite({
-  position: {
-    x: 280,
-    y: 325,
-  },
-  image: embyImage,
-  frames: {
-    max: 4,
-    hold: config.myMonsterAnimationSpeed,
-  },
-  animate: true,
-})
-
-function animateBattle() {
-  window.requestAnimationFrame(animateBattle)
-  battleBackground.draw(c)
-  draggle.draw(c)
-  emby.draw(c)
-}
-
-// animate()
-animateBattle()
-document.querySelectorAll('button').forEach((button) => {
-  button.addEventListener('click', () => {
-    emby.attack({
-      attack: {
-        name: 'Tackle',
-        damage: 10,
-        type: 'normal',
-      },
-      recipient: draggle,
-    })
-  })
-})
 
 let lastKey = ''
 
