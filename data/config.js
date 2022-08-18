@@ -25,5 +25,6 @@ export const config = {
 
     // set my monster animation speed
     myMonsterAnimationSpeed : 25,
+    
 }
 

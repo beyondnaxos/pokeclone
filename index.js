@@ -130,8 +130,8 @@ const keys = {
 const movables = [background, ...boundaries, foreground, ...battleZones]
 function rectangularCollision({ rectangle1, rectangle2 }) {
   return (
-    rectangle1.position.x + rectangle1.width - 15 >= rectangle2.position.x && // right
-    rectangle1.position.x <= rectangle2.position.x - 15 + rectangle2.width && // left
+    rectangle1.position.x + rectangle1.width  >= rectangle2.position.x && // right
+    rectangle1.position.x <= rectangle2.position.x  + rectangle2.width && // left
     rectangle1.position.y <= rectangle2.position.y - 25 + rectangle2.height && // up
     rectangle1.position.y + rectangle1.height >= rectangle2.position.y // down
   )
@@ -512,6 +512,7 @@ function animateBattle() {
 
 // animate()
 animateBattle()
+
 
 
 let lastKey = ''
