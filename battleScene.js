@@ -1,6 +1,8 @@
 import { Sprite } from '/classes.js'
 import { attacks } from './data/attacks.js'
 import { config } from './data/config.js'
+import { monsters } from './data/monsters.js'
+import { Monster } from './classes.js'
 
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
@@ -15,42 +17,19 @@ const battleBackground = new Sprite({
   image: battleBackgroundImage,
 })
 
-const draggleImage = new Image()
-draggleImage.src = './img/draggleSprite.png'
+const draggle = new Monster(monsters.Draggle)
 
-const draggle = new Sprite({
-  position: {
-    x: 800,
-    y: 100,
-  },
-  image: draggleImage,
-  frames: {
-    max: 4,
-    hold: config.adversMonsterAnimationSpeed,
-  },
-  animate: true,
-  isEnemy: true,
-  name: 'Draggle',
-})
-
-const embyImage = new Image()
-embyImage.src = './img/embySprite.png'
-
-const emby = new Sprite({
-  position: {
-    x: 280,
-    y: 325,
-  },
-  image: embyImage,
-  frames: {
-    max: 4,
-    hold: config.myMonsterAnimationSpeed,
-  },
-  animate: true,
-  name: 'Emby',
-})
+const emby = new Monster(monsters.Emby)
 
 const renderedSprites = [draggle, emby]
+
+emby.attacks.forEach((attack) => {
+    const button = document.createElement('button')
+    button.innerHTML = attack.name
+    document.querySelector('#attackBox').append(button)
+})
+
+
 
 function animateBattle() {
   window.requestAnimationFrame(animateBattle)
@@ -118,7 +97,7 @@ document.querySelectorAll('button').forEach((button) => {
       recipient: draggle,
       renderedSprites,
     })
-    
+
     animeLetters()
 
     queue.push(() => {
