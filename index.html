@@ -53,7 +53,7 @@
   ></div>
   <canvas></canvas>
 
-<!-- ***************************************************************************************************** -->
+  <!-- ***************************************************************************************************** -->
   <!-- hp bar -->
 
   <!-- Draggle -->
@@ -68,11 +68,21 @@
       padding: 12px;
     "
   >
-    <h1 style="font-size: 16px ;margin: 0;">Draggle</h1>
-    <div style="position: relative;">
-    <div style="height: 5px ; background-color: #ccc; margin-top: 10px; "></div>
-    <div style="height: 5px ; background-color: green; position: absolute; top: 0; left: 0; right: 0;"></div>
-  </div>
+    <h1 style="font-size: 16px; margin: 0">Draggle</h1>
+    <div style="position: relative">
+      <div style="height: 5px; background-color: #ccc; margin-top: 10px"></div>
+      <div
+        id="enemyHealthBar"
+        style="
+          height: 5px;
+          background-color: green;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+        "
+      ></div>
+    </div>
   </div>
 
   <!-- Emby -->
@@ -87,16 +97,26 @@
       padding: 12px;
     "
   >
-    <h1 style="font-size: 16px ;margin: 0;">Draggle</h1>
-    <div style="position: relative;">
-    <div style="height: 5px ; background-color: #ccc; margin-top: 10px; "></div>
-    <div style="height: 5px ; background-color: green; position: absolute; top: 0; left: 0; right: 0;"></div>
-  </div>
+    <h1 style="font-size: 16px; margin: 0">Draggle</h1>
+    <div style="position: relative">
+      <div style="height: 5px; background-color: #ccc; margin-top: 10px"></div>
+      <div
+        id="playerHealthBar"
+        style="
+          height: 5px;
+          background-color: green;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+        "
+      ></div>
+    </div>
   </div>
 
   <!-- ***************************************************************************************************** -->
   <!-- ***************************************************************************************************** -->
-  
+
   <!-- Attacks + Atype UI  -->
   <div
     style="
@@ -118,7 +138,7 @@
         grid-template-columns: repeat(2, 1fr);
       "
     >
-      <button>Attack1</button>
+      <button>Tackle</button>
       <button>Attack2</button>
       <button>Attack3</button>
       <button>Attack4</button>

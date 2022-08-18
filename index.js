@@ -130,8 +130,8 @@ const keys = {
 const movables = [background, ...boundaries, foreground, ...battleZones]
 function rectangularCollision({ rectangle1, rectangle2 }) {
   return (
-    rectangle1.position.x + rectangle1.width  >= rectangle2.position.x && // right
-    rectangle1.position.x <= rectangle2.position.x  + rectangle2.width && // left
+    rectangle1.position.x + rectangle1.width >= rectangle2.position.x && // right
+    rectangle1.position.x <= rectangle2.position.x + rectangle2.width && // left
     rectangle1.position.y <= rectangle2.position.y - 25 + rectangle2.height && // up
     rectangle1.position.y + rectangle1.height >= rectangle2.position.y // down
   )
@@ -451,7 +451,7 @@ function animate() {
   }
   /******************************************************************************************* */
 }
-// disabled for dev battle 
+// disabled for dev battle
 // animate()
 
 const battleBackgroundImage = new Image()
@@ -464,7 +464,6 @@ const battleBackground = new Sprite({
   image: battleBackgroundImage,
 })
 
-
 const draggleImage = new Image()
 draggleImage.src = './img/draggleSprite.png'
 
@@ -473,15 +472,14 @@ const draggle = new Sprite({
     x: 800,
     y: 100,
   },
-  image : draggleImage,
-  frames : {
+  image: draggleImage,
+  frames: {
     max: 4,
-    hold : config.adversMonsterAnimationSpeed
+    hold: config.adversMonsterAnimationSpeed,
   },
-  animate : true,
-
+  animate: true,
+  isEnemy : true,
 })
-
 
 const embyImage = new Image()
 embyImage.src = './img/embySprite.png'
@@ -491,16 +489,13 @@ const emby = new Sprite({
     x: 280,
     y: 325,
   },
-  image : embyImage,
-  frames : {
+  image: embyImage,
+  frames: {
     max: 4,
-    hold : config.myMonsterAnimationSpeed
+    hold: config.myMonsterAnimationSpeed,
   },
-  animate : true,
-
+  animate: true,
 })
-
-
 
 function animateBattle() {
   window.requestAnimationFrame(animateBattle)
@@ -509,11 +504,20 @@ function animateBattle() {
   emby.draw(c)
 }
 
-
 // animate()
 animateBattle()
-
-
+document.querySelectorAll('button').forEach((button) => {
+  button.addEventListener('click', () => {
+    emby.attack({
+      attack: {
+        name: 'Tackle',
+        damage: 10,
+        type: 'normal',
+      },
+      recipient: draggle,
+    })
+  })
+})
 
 let lastKey = ''
 
