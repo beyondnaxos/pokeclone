@@ -151,7 +151,7 @@ export class Monster extends Sprite {
               width: recipient.health + '%',
             })
             gsap.to(recipient.position, {
-              x: recipient.position.x + 12,
+              x: recipient.position.x + 10,
               yoyo: true,
               repeat: 5,
               duration: 0.08,
@@ -278,7 +278,7 @@ export class Monster extends Sprite {
                 width: recipient.health + '%',
               })
               gsap.to(recipient.position, {
-                x: recipient.position.x + 12,
+                x: recipient.position.x + 10,
                 yoyo: true,
                 repeat: 5,
                 duration: 0.08,

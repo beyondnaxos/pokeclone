@@ -189,7 +189,14 @@ export function animate() {
 
         // deactivate current animation loop
         window.cancelAnimationFrame(animationId)
-
+        audio.Map.stop()
+        audio.initBattle.play()
+        // wait initBattle.play in order to play next audio
+        setTimeout(() => {
+          audio.initBattle.stop()
+          audio.battle.play()
+        }, 2820)
+        // audio.battle.play()
         battle.initiated = true
 
         gsap.to('#overlappingDiv', {
@@ -453,9 +460,7 @@ export function animate() {
   /******************************************************************************************* */
 }
 // disabled for dev battle
-// animate()
-
-
+animate()
 
 let lastKey = ''
 
@@ -497,4 +502,13 @@ window.addEventListener('keyup', (e) => {
       break
   }
   // console.log(keys)
+})
+
+
+let clicked = false
+addEventListener('click', (e) => {
+  if (!clicked) {
+    audio.Map.play()
+    clicked = true
+  }
 })

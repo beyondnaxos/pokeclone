@@ -7,6 +7,9 @@ import { animate, battle } from './index.js'
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
+
+// animate()
+ 
 const battleBackgroundImage = new Image()
 battleBackgroundImage.src = './img/battleBackground.png'
 const battleBackground = new Sprite({
@@ -208,8 +211,8 @@ export function animateBattle() {
   })
 }
 
-initBattle()
-animateBattle()
+// initBattle()
+// animateBattle()
 
 
 // our event listeners for our buttons (attack)
