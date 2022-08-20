@@ -151,7 +151,9 @@ export function initBattle() {
             opacity: 1,
             onComplete: () => {
               cancelAnimationFrame(battleAnimationId)
+              audio.battle.stop()
               animate()
+              audio.Map.play()
               document.querySelector('#userInterface').style.display = 'none'
               gsap.to('#overlappingDiv', {
                 opacity: 0,
@@ -181,7 +183,9 @@ export function initBattle() {
               opacity: 1,
               onComplete: () => {
                 cancelAnimationFrame(battleAnimationId)
+                audio.battle.stop()
                 animate()
+                audio.Map.play()
                 document.querySelector('#userInterface').style.display = 'none'
                 gsap.to('#overlappingDiv', {
                   opacity: 0,

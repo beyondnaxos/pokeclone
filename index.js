@@ -506,9 +506,16 @@ window.addEventListener('keyup', (e) => {
 
 
 let clicked = false
+// addEventListener('load', (e) => {
+//   if (!clicked) {
+//     audio.Map.play()
+//     clicked = true
+//   }
+// })
 addEventListener('click', (e) => {
   if (!clicked) {
     audio.Map.play()
     clicked = true
   }
 })
+

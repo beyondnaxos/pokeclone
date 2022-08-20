@@ -20,7 +20,6 @@ export class Sprite {
     this.sprites = sprites
     this.opacity = 1
     this.rotation = rotation
-
   }
 
   draw(c) {
@@ -59,13 +58,9 @@ export class Sprite {
       else this.frames.val = 0
     }
   }
-
-  
 }
 
-
 export class Monster extends Sprite {
-
   constructor({
     position,
     image,
@@ -75,15 +70,15 @@ export class Monster extends Sprite {
     rotation = 0,
     isEnemy = false,
     name,
-    attacks
+    attacks,
   }) {
     super({
       position,
-    image,
-    frames,
-    sprites,
-    animate ,
-    rotation 
+      image,
+      frames,
+      sprites,
+      animate,
+      rotation,
     })
     this.health = 100
     this.isEnemy = isEnemy
@@ -94,26 +89,39 @@ export class Monster extends Sprite {
   faint() {
     document.querySelector('.letters').innerHTML = this.name + ' fainted'
     gsap.to(this.position, {
-      y : this.position.y +20,
-
+      y: this.position.y + 20,
     })
     gsap.to(this, {
-      opacity : 0,
+      opacity: 0,
     })
   }
 
-  
   attack({ attack, recipient, renderedSprites }) {
-
     document.querySelector('#dialogueBox').style.display = 'flex'
-    if(attack.damage > 25) {
+    if (attack.damage > 25) {
       document.querySelector('.letters').style.color = 'red'
-      document.querySelector('.letters').innerHTML = '<b class="red">Critical </b>'  + this.name + ' used ' + attack.name + ' ' + recipient.name  + '  lost ' + attack.damage + ' health points' 
+      document.querySelector('.letters').innerHTML =
+        '<b class="red">Critical </b>' +
+        this.name +
+        ' used ' +
+        attack.name +
+        ' ' +
+        recipient.name +
+        '  lost ' +
+        attack.damage +
+        ' health points'
     } else {
       document.querySelector('.letters').style.color = 'black'
-      document.querySelector('.letters').innerHTML =  this.name + ' used ' + attack.name + ' , ' + recipient.name  + '  lost ' + attack.damage + ' health points'
+      document.querySelector('.letters').innerHTML =
+        this.name +
+        ' used ' +
+        attack.name +
+        ' , ' +
+        recipient.name +
+        '  lost ' +
+        attack.damage +
+        ' health points'
     }
-
 
     let healthBar = '#enemyHealthBar'
     if (this.isEnemy) healthBar = '#playerHealthBar'
@@ -125,7 +133,7 @@ export class Monster extends Sprite {
 
     switch (attack.name) {
       case 'Fireball':
-
+        audio.fireball.play()
         const fireballImage = new Image()
         fireballImage.src = './img/fireball.png'
         const fireball = new Sprite({
@@ -139,7 +147,7 @@ export class Monster extends Sprite {
             hold: 10,
           },
           animate: true,
-          rotation
+          rotation,
         })
         renderedSprites.splice(1, 0, fireball)
 
@@ -147,6 +155,8 @@ export class Monster extends Sprite {
           x: recipient.position.x,
           y: recipient.position.y,
           onComplete: () => {
+            audio.fireballHit.play()
+
             gsap.to(healthBar, {
               width: recipient.health + '%',
             })
@@ -169,7 +179,7 @@ export class Monster extends Sprite {
 
         break
       case 'Waterball':
-
+        audio.fireball.play()
         const waterballImage = new Image()
         waterballImage.src = './img/fireball.png'
         const waterball = new Sprite({
@@ -183,7 +193,7 @@ export class Monster extends Sprite {
             hold: 10,
           },
           animate: true,
-          rotation
+          rotation,
         })
         renderedSprites.splice(1, 0, waterball)
 
@@ -191,6 +201,9 @@ export class Monster extends Sprite {
           x: recipient.position.x,
           y: recipient.position.y,
           onComplete: () => {
+      
+              audio.tackle.play()
+        
             gsap.to(healthBar, {
               width: recipient.health + '%',
             })
@@ -212,9 +225,9 @@ export class Monster extends Sprite {
         })
 
         break
-        
-      case 'Growl':
 
+      case 'Growl':
+        audio.tackle.play()
         const growlImage = new Image()
         growlImage.src = './img/fireball.png'
         const growl = new Sprite({
@@ -228,7 +241,7 @@ export class Monster extends Sprite {
             hold: 10,
           },
           animate: true,
-          rotation
+          rotation,
         })
         renderedSprites.splice(1, 0, growl)
 
@@ -236,6 +249,8 @@ export class Monster extends Sprite {
           x: recipient.position.x,
           y: recipient.position.y,
           onComplete: () => {
+            audio.gustHit.play()
+
             gsap.to(healthBar, {
               width: recipient.health + '%',
             })
@@ -257,9 +272,9 @@ export class Monster extends Sprite {
         })
 
         break
-        
-      
-        case 'Tackle':
+
+      case 'Tackle':
+        audio.tackle.play()
         const tl = gsap.timeline()
 
         let movementDistance = 20
@@ -270,10 +285,10 @@ export class Monster extends Sprite {
         })
           .to(this.position, {
             x: this.position.x + movementDistance * 2,
-            y: this.position.y - movementDistance - 10,
             duration: 0.1,
             onComplete: () => {
-              // Enemy actually gets hit
+              audio.tackleHit.play()
+
               gsap.to(healthBar, {
                 width: recipient.health + '%',
               })
@@ -294,7 +309,6 @@ export class Monster extends Sprite {
           })
           .to(this.position, {
             x: this.position.x,
-            y: this.position.y,
           })
         break
     }
