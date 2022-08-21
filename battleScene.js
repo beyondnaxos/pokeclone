@@ -151,7 +151,7 @@ export function initBattle() {
             opacity: 1,
             onComplete: () => {
               cancelAnimationFrame(battleAnimationId)
-              audio.battle.stop()
+              audio.victory.stop()
               animate()
               audio.Map.play()
               document.querySelector('#userInterface').style.display = 'none'

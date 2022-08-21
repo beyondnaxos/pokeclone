@@ -39,5 +39,11 @@ const audio = {
         html5 : true,
         volume : 0.1
     }),
+    
+    victory : new Howl({
+        src: './audio/victory.mp3',
+        html5 : true,
+        volume : 0.1
+    }),
 
 }
