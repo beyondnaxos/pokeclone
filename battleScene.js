@@ -1,5 +1,5 @@
 import { Sprite } from '/classes.js'
-import { attacks } from './data/attacks.js'
+import { attacks, generateAttacks } from './data/attacks.js'
 import { config } from './data/config.js'
 import { monsters } from './data/monsters.js'
 import { Monster } from './classes.js'
@@ -132,7 +132,8 @@ export function initBattle() {
 
   document.querySelectorAll('button').forEach((button) => {
     button.addEventListener('click', (e) => {
-      const selectedAttack = attacks[e.currentTarget.innerHTML]
+     // const selectedAttack = attacks[e.currentTarget.innerHTML]
+      const selectedAttack = generateAttacks(e.currentTarget.innerHTML)
       emby.attack({
         attack: selectedAttack,
         recipient: draggle,
