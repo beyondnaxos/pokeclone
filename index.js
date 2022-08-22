@@ -1,6 +1,7 @@
 import { collisions } from './data/collisions.js'
 import { battleZonesData } from './data/battleZones.js'
 import { Sprite, Boundary } from '/classes.js'
+import {villagerMapData} from './data/villager.js'
 import { attacks } from './data/attacks.js'
 import { config } from './data/config.js'
 import { animateBattle, initBattle } from './battleScene.js'
@@ -23,6 +24,12 @@ const battleZonesMap = []
 for (let i = 0; i < battleZonesData.length; i += config.mapWidth) {
   battleZonesMap.push(battleZonesData.slice(i, config.mapWidth + i))
 }
+
+const villagersMap = []
+for (let i = 0; i < villagerMapData.length; i += config.mapWidth) {
+  villagersMap.push(villagerMapData.slice(i, config.mapWidth + i))
+}
+console.log(villagersMap)
 
 const boundaries = []
 
