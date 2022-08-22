@@ -1,7 +1,7 @@
 import { collisions } from './data/collisions.js'
 import { battleZonesData } from './data/battleZones.js'
 import { Sprite, Boundary } from '/classes.js'
-import {villagerMapData} from './data/villager.js'
+import { villagerMapData } from './data/villager.js'
 import { attacks } from './data/attacks.js'
 import { config } from './data/config.js'
 import { animateBattle, initBattle } from './battleScene.js'
@@ -67,8 +67,41 @@ battleZonesMap.forEach((row, i) => {
   })
 })
 
-console.log('battleZones', battleZones)
+const villagers = []
+const villagerImg = new Image()
+villagerImg.src = './img/villager.png'
 
+villagersMap.forEach((row, i) => {
+  row.forEach((symbol, j) => {
+    if (symbol === 1026) {
+      boundaries.push(
+        new Boundary({
+          position: {
+            x: j * Boundary.width + offset.x,
+            y: i * Boundary.height + offset.y,
+          },
+        })
+      )
+      villagers.push(
+        new Sprite({
+          position: {
+            x: j * Boundary.width + offset.x,
+            y: i * Boundary.height + offset.y,
+          },
+          image: villagerImg,
+          frames: {
+            max: 4,
+            hold: 60,
+          },
+          scale: 3,
+          animate: true,
+        })
+      )
+    }
+  })
+})
+
+console.log(villagers)
 const image = new Image()
 image.src = './img/Naxos_town.png'
 
@@ -136,7 +169,22 @@ const keys = {
   },
 }
 
-const movables = [background, ...boundaries, foreground, ...battleZones]
+const movables = [
+  background,
+  ...boundaries,
+  foreground,
+  ...battleZones,
+  ...villagers,
+]
+const renderables = [
+  background,
+  ...boundaries,
+  ...battleZones,
+  ...villagers,
+  player,
+  foreground,
+]
+
 function rectangularCollision({ rectangle1, rectangle2 }) {
   return (
     rectangle1.position.x + rectangle1.width >= rectangle2.position.x && // right
@@ -153,15 +201,10 @@ export let battle = {
 export function animate() {
   const animationId = window.requestAnimationFrame(animate)
   // console.log('animationId', animationId)
-  background.draw(c)
-  boundaries.forEach((boundary) => {
-    boundary.draw(c)
+
+  renderables.forEach((renderable) => {
+    renderable.draw(c)
   })
-  battleZones.forEach((battleZone) => {
-    battleZone.draw(c)
-  })
-  player.draw(c)
-  foreground.draw(c)
 
   let moving = true
   player.animate = false
@@ -511,7 +554,6 @@ window.addEventListener('keyup', (e) => {
   // console.log(keys)
 })
 
-
 let clicked = false
 // addEventListener('load', (e) => {
 //   if (!clicked) {
@@ -525,4 +567,3 @@ addEventListener('click', (e) => {
     clicked = true
   }
 })
-
