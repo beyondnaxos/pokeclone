@@ -176,6 +176,7 @@ const movables = [
   ...battleZones,
   ...villagers,
 ]
+
 const renderables = [
   background,
   ...boundaries,
